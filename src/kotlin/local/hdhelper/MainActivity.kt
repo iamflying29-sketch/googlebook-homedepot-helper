@@ -8,7 +8,10 @@ import android.os.Handler
 import android.os.Looper
 import android.provider.Settings
 import android.text.format.DateFormat
+import android.graphics.Typeface
 import android.util.TypedValue
+import android.view.Window
+import android.view.WindowInsets
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.ScrollView
@@ -30,12 +33,18 @@ class MainActivity : Activity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // No separate title bar: the window's own frame already names the app, and the title is the
+        // first line of the content instead, so nothing can cover the text.
+        requestWindowFeature(Window.FEATURE_NO_TITLE)
         super.onCreate(savedInstanceState)
         val pad = (16 * resources.displayMetrics.density).toInt()
         val root = LinearLayout(this)
         root.orientation = LinearLayout.VERTICAL
         root.setPadding(pad, pad, pad, pad)
 
+        val title = text(getString(R.string.app_name), 22f)
+        title.setTypeface(title.typeface, Typeface.BOLD)
+        root.addView(title)
         root.addView(text(getString(R.string.about), 15f))
         service = text("", 16f); root.addView(service)
         fix = Button(this)
@@ -62,6 +71,13 @@ class MainActivity : Activity() {
 
         val scroll = ScrollView(this)
         scroll.addView(root)
+        // Android draws apps from edge to edge, so keep the content clear of the window's title bar
+        // (in a desktop window) and of the status and navigation bars (in full screen).
+        scroll.setOnApplyWindowInsetsListener { v, insets ->
+            val b = insets.getInsets(WindowInsets.Type.systemBars() or WindowInsets.Type.displayCutout())
+            v.setPadding(b.left, b.top, b.right, b.bottom)
+            WindowInsets.CONSUMED
+        }
         setContentView(scroll)
         Guard.ensure(this)
     }
