@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Home Depot Helper</string>
+    <string name="service_label">Home Depot Helper</string>
+    <string name="service_desc">Types a Home Depot sign-in code into the code field of the Home Depot app when a verification code email arrives and you tap its notification. It only looks at the Home Depot app, only while a code is waiting to be typed, and it stores nothing.</string>
+
+    <string name="about">When you tap a Home Depot order notification from Notification Keeper, this helper takes you to the exact place in the Home Depot app: the order itself for a shipped, delivered, rescheduled, cancelled or confirmed order, your purchase history when the email names no order number, and for a sign-in verification code it copies the code and types it into the app\'s code field. Anything else simply opens the Home Depot app. It works in the background on its own, so you can close this window.</string>
+
+    <string name="service_on">✓ The helper is on, so a verification code is typed into the Home Depot app for you.</string>
+    <string name="service_off">✗ The helper is off: a verification code is only copied, and you paste it yourself. Turn on "Home Depot Helper" in Settings, then Accessibility.</string>
+    <string name="button_fix">Fix</string>
+    <string name="perm_on">✓ The helper can switch itself back on after an update.</string>
+    <string name="perm_off">The helper cannot switch itself back on after an update. Grant it once over adb: pm grant local.hdhelper android.permission.WRITE_SECURE_SETTINGS</string>
+    <string name="hd_installed">✓ The Home Depot app is installed.</string>
+    <string name="hd_missing">✗ The Home Depot app is not installed, so notifications open homedepot.com instead.</string>
+    <string name="last_action">Last action: %1$s (%2$s)</string>
+    <string name="last_none">Last action: none yet.</string>
+    <string name="button_history">Open my purchase history in the Home Depot app</string>
+    <string name="button_open">Open the Home Depot app</string>
+
+    <string name="status_connected">helper service connected</string>
+    <string name="status_gave_up">gave up: no code field appeared in the Home Depot app in time</string>
+    <string name="status_filled">typed the code %1$s into the Home Depot app</string>
+    <string name="status_order">opened order %1$s</string>
+    <string name="status_history">opened the purchase history</string>
+    <string name="status_app">opened the Home Depot app</string>
+    <string name="status_code">copied the code %1$s and opened the Home Depot app</string>
+    <string name="toast_code_typing">Code %1$s copied. Typing it into the Home Depot app.</string>
+    <string name="toast_code_copied">Code %1$s copied. Paste it into the Home Depot app.</string>
+</resources>

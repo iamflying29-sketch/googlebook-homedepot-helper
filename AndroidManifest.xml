@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Home Depot Helper: takes a Home Depot order notification from Notification Keeper to the exact
+     place in the Home Depot app (the order, the purchase history, or a sign-in code field). -->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="local.hdhelper">
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <!-- Lets the helper switch its own accessibility service back on after an update (granted once
+         over adb, see the README). It never touches another app's service. -->
+    <uses-permission android:name="android.permission.WRITE_SECURE_SETTINGS" />
+
+    <!-- Package visibility: the Home Depot app is the only app this helper opens. Notification Keeper
+         (and the adb shell, for tests) are listed so the helper can see who opened it: Android hides
+         the launching package from an app that has not declared it here. -->
+    <queries>
+        <package android:name="com.thehomedepot" />
+        <package android:name="local.notifkeeper" />
+        <package android:name="com.android.shell" />
+    </queries>
+
+    <application
+        android:label="@string/app_name"
+        android:icon="@drawable/ic_launcher"
+        android:allowBackup="false"
+        android:theme="@android:style/Theme.DeviceDefault.DayNight">
+
+        <!-- The status window. -->
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:launchMode="singleTask">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- The entry point a Home Depot notification taps into. Invisible: it works out where to go,
+             opens the Home Depot app there, and finishes. Only Notification Keeper (and adb, for
+             testing) may pass it an email's subject and text; anyone else just opens the app. -->
+        <activity
+            android:name=".OpenActivity"
+            android:exported="true"
+            android:excludeFromRecents="true"
+            android:noHistory="true"
+            android:taskAffinity=""
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <!-- The accessibility helper: types a sign-in code into the Home Depot app's code field. It
+             only receives events from the Home Depot app (see res/xml/hd_helper.xml). -->
+        <service
+            android:name=".HdHelperService"
+            android:exported="true"
+            android:label="@string/service_label"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/hd_helper" />
+        </service>
+
+        <!-- After a restart or an update: make sure the helper service is still on. -->
+        <receiver
+            android:name=".BootReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+            </intent-filter>
+        </receiver>
+    </application>
+</manifest>
