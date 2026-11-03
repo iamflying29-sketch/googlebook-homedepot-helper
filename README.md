@@ -61,10 +61,23 @@ did before this helper existed.
 * A Lenovo Googlebook 15 running GooglebookOS (Android 17 desktop). The app needs Android 14 or
   newer. I have only tested it on my Googlebook.
 * The Home Depot app, and Notification Keeper with its Home Depot order notifications.
-* The Linux Terminal with adb connected to the Googlebook, plus a JDK, Python 3, the Android SDK
-  build tools 35.0.0 with the android-35 platform, and the Kotlin compiler, to build the APK. The
-  shared [Getting Started guide](https://github.com/iamflying29-sketch/googlebook-projects/blob/main/GETTING-STARTED.md)
-  covers all of it.
+* The Linux Terminal with adb connected to the Googlebook, plus a JDK, Python 3, and the Android SDK
+  build tools 35.0.0 with the android-35 platform, to build the APK. The shared
+  [Getting Started guide](https://github.com/iamflying29-sketch/googlebook-projects/blob/main/GETTING-STARTED.md)
+  covers all of these.
+* JetBrains' Kotlin command-line compiler, which the Getting Started guide does not cover. Download
+  `kotlin-compiler-<version>.zip` from the
+  [Kotlin releases page](https://github.com/JetBrains/kotlin/releases) and unpack it so that
+  `~/tools/kotlin/kotlinc/bin/kotlinc` exists:
+
+  ```bash
+  mkdir -p ~/tools/kotlin
+  unzip ~/Downloads/kotlin-compiler-*.zip -d ~/tools/kotlin
+  ~/tools/kotlin/kotlinc/bin/kotlinc -version
+  ```
+
+  The last command prints the compiler's version. If you keep the compiler somewhere else, set
+  `KOTLIN_HOME` to its `kotlinc` folder. I build with version 2.4.21.
 
 ## Installation
 
